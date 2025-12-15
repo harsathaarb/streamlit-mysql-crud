@@ -2,23 +2,23 @@ import mysql.connector
 import streamlit as st
 import pandas as pd
 
-# ---------------- MYSQL CONNECTION ----------------
+
 mysql_db = mysql.connector.connect(
-    host="127.0.0.1",
+    host="local host",
     user="root",
     password="root",
     database="crud"
 )
 
-# Built-in connection test
+# Testing the connection
 if mysql_db.is_connected():
-    st.success("MYSQL connection successfully established 🤝")
+    st.success("MYSQL connection successfully established")
 else:
-    st.error("MYSQL connection failed ❌")
+    st.error("MYSQL connection failed")
 
 mycursor = mysql_db.cursor()
 
-# ---------------- STREAMLIT APP ----------------
+
 def app():
     st.title("OPS Table – CRUD Operations")
 
@@ -27,7 +27,7 @@ def app():
         ("ADD", "VIEW", "UPDATE", "DELETE", "FILTER")
     )
 
-    # ---------------- ADD ----------------
+    # ADD
     if option == "ADD":
         st.subheader("Add New Order")
 
@@ -40,9 +40,9 @@ def app():
             value = (name, product, qty)
             mycursor.execute(sql, value)
             mysql_db.commit()
-            st.success("Order added successfully ✅")
+            st.success("Order added successfully")
 
-    # ---------------- VIEW ----------------
+    # VIEW
     elif option == "VIEW":
         st.subheader("View All Orders")
 
@@ -52,7 +52,7 @@ def app():
         df = pd.DataFrame(records, columns=["orderID", "Name", "Product", "QTY"])
         st.dataframe(df)
 
-    # ---------------- UPDATE ----------------
+    # UPDATE
     elif option == "UPDATE":
         st.subheader("Update Order")
 
@@ -70,9 +70,9 @@ def app():
             value = (name, product, qty, order_id)
             mycursor.execute(sql, value)
             mysql_db.commit()
-            st.success("Order updated successfully 🙌")
+            st.success("Order updated successfully")
 
-    # ---------------- DELETE ----------------
+    # DELETE
     elif option == "DELETE":
         st.subheader("Delete Order")
 
@@ -83,9 +83,9 @@ def app():
             value = (order_id,)
             mycursor.execute(sql, value)
             mysql_db.commit()
-            st.success("Order deleted successfully ❌")
+            st.success("Order deleted successfully")
 
-    # ---------------- FILTER ----------------
+    # FILTER
     elif option == "FILTER":
         st.subheader("Filter Orders by Product")
 
@@ -101,7 +101,7 @@ def app():
                 df = pd.DataFrame(records, columns=["orderID", "Name", "Product", "QTY"])
                 st.dataframe(df)
             else:
-                st.warning("No matching records found 😒")
+                st.warning("No matching records found")
 
-# Run app
 app()
+
